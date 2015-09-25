@@ -12,7 +12,7 @@ class IssueController < ApplicationController
 		@repostore = Repostore.where(name: "#{@owner}.#{@repo}").first
 		@repostore = Repostore.new(name: "#{@owner}.#{@repo}") unless @repostore
 		values_hash = get_issues(@owner, @repo, git_client)
-		# update_store(values_hash)
+		update_store(values_hash)
 		make_calculations
 	end
 
@@ -24,9 +24,7 @@ class IssueController < ApplicationController
 		@repostore = Repostore.find(params[:repostore_id])
 		@issue_name = params[:submit]
 	    @display =  JSON.parse $redis.get(@repostore.redis_key(@issue_name.to_sym))
-	  	debugger
-	  	324
-	  	@display.map!{ |h| h.slice("url", "id", "user", "title", "created_at")}
+	  	@display.map!{ |h| h.slice("html_url", "id", "user", "title")}
 	    respond_to do |format|
 	        format.js { render :layout => false }
 	    end
