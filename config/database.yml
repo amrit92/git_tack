@@ -23,7 +23,3 @@ test:
   pool: 5
   username: postgres
   password: postgres
-
-# production:
-#   <<: *default
-#   database: db/production.sqlite3
