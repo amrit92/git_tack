@@ -175,6 +175,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   pg
+  rack
   rails (= 4.0.0)
   redis-rails
   sass-rails (~> 5.0)
