@@ -14,7 +14,7 @@
       
         <% @table_data.each do |issue, value| %>
           <tr>
-            <td><%= link_to issue, {:action => :clickme, :submit => issue, :repostore_id => @repostore.id}, {method: :post, :remote => true, :id=>"clk", dataType: 'json'} %></td>
+            <td><%= link_to issue, {:action => :issues_rows, :submit => issue, :repostore_id => @repostore.id}, {method: :post, :remote => true, :id=>"clk", dataType: 'json'} %></td>
             <td><%= value %></td>
           </tr>
         <% end %>
@@ -24,5 +24,5 @@
 </div>
 
 <div id="allclick">
-    <%= render :partial => 'goclick' %>
+    <%= render :partial => 'issue_details' if @display.present? %>
 </div>

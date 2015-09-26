@@ -1,28 +1,23 @@
-== README
+GitHub Issues tracking app.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This app fetches the following data from github
 
-Things you may want to cover:
+- Total number of open issues
+- Number of open issues that were opened in the last 24 hours
+- Number of open issues that were opened more than 24 hours ago but less than 7 days ago
+- Number of open issues that were opened more than 7 days ago
 
-* Ruby version
+The formula to calculate these are.
+   "Total open issues" => directly from API
+   "Issues opened in past 24 hrs" => directly from API with 'since 1 day' option
+   "Issues opened more than 24 hours ago but less than 7 days ago" => issues since 7 days - issue since 1 day
+   "Issues opened more than 7 days ago" => all issues - issues since 7 days
 
-* System dependencies
+As an extra step, the app also fetches all the data from github and display all the links to the viewer!!
 
-* Configuration
+For achieving this, instead of refetching multiple times, all the data is fetched initially and stored in a Redis store and is fetched when required.
+This approach is taken keeping in mind that later, extra features like filters and analysis can be done.
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Link to live app (hosted on openshift):  http://rails-quescape.rhcloud.com/
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.

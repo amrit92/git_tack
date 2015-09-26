@@ -22,7 +22,7 @@ class IssueController < ApplicationController
   end
  end
 
- def clickme
+ def issues_rows
   @repostore = Repostore.find(params[:repostore_id])
   @issue_name = params[:submit]
      @display =  JSON.parse $redis.get(@repostore.redis_key(@issue_name.to_sym))
@@ -34,16 +34,16 @@ class IssueController < ApplicationController
 
  def get_issues(owner, repo, git_client, options={})
   @issues_list = git_client.issues.list(user: owner, repo: repo, state: "open")
-
   @issues_last_24_hours = git_client.issues.list(user: owner, repo: repo, state: "open", filter: 'created', since: Time.parse("#{1.days.ago}").iso8601)
-
   @issues_last_7_days = git_client.issues.list(user: owner, repo: repo, state: "open", filter: 'created', since: Time.parse("#{7.days.ago}").iso8601)
+  
   values_hash = {
    issues_list: @issues_list,
    issues_last_24_hours: @issues_last_24_hours,
    issues_last_7_days: @issues_last_7_days,
    table_data: @table_data
   }
+
   @table_data = {
    "Total open issues" => @issues_list.size,
    "Issues opened in past 24 hrs" => @issues_last_24_hours.size,

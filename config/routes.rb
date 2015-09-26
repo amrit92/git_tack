@@ -57,7 +57,7 @@ Rails.application.routes.draw do
   root :to => "welcome#index"
   resources :issue do
   	collection do
-        post 'clickme'
+        post 'issues_rows'
       end
   end
 end
