@@ -23,3 +23,12 @@ test:
   pool: 5
   username: postgres
   password: postgres
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: ENV["PGDATABASE"
+  host: ENV["OPENSHIFT_POSTGRESQL_DB_HOST"]
+  pool: 5
+  username: ENV["OPENSHIFT_POSTGRESQL_DB_USERNAME"]
+  password: ENV["OPENSHIFT_POSTGRESQL_DB_PASSWORD"]
