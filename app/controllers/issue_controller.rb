@@ -5,7 +5,7 @@ class IssueController < ApplicationController
 	BET_24_7 = "Issues opened more than 24 hours ago but less than 7 days ago"
 	MORE_THAN_7 = "Issues opened more than 7 days ago"
 	def index
-		token = '749ecddf1ada1dfce8ea8875f8e04f32f112d567'
+		token = $GIT_TOKEN
 
 		@owner, @repo = params[:user].split('/')
 		git_client = Github.new auto_pagination: true, oauth_token: token, user: @owner, repo: @repo
