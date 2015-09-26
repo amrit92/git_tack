@@ -54,8 +54,7 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  # get 'issue/:id' => 'issue#show'
-  # get 'issue' => 'issue#index'
+  root :to => "welcome#index"
   resources :issue do
   	collection do
         post 'clickme'

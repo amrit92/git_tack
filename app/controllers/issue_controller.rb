@@ -6,18 +6,15 @@ class IssueController < ApplicationController
 	MORE_THAN_7 = "Issues opened more than 7 days ago"
 	def index
 		token = '61084046f66498e9fdeeeb1d9162436e45316d7f'
-		@owner = params[:user]
-		@repo = params[:repo]
+
+		@owner, @repo = params[:user].split('/')
+		return if @owner.nil? || @repo.nil?
 		git_client = Github.new auto_pagination: true, oauth_token: token
 		@repostore = Repostore.where(name: "#{@owner}.#{@repo}").first
 		@repostore = Repostore.new(name: "#{@owner}.#{@repo}") unless @repostore
 		values_hash = get_issues(@owner, @repo, git_client)
 		update_store(values_hash)
 		make_calculations
-	end
-
-	def show
-		@issue_data
 	end
 
 	def clickme
@@ -36,9 +33,6 @@ class IssueController < ApplicationController
 		@issues_last_24_hours = git_client.issues.list(user: owner, repo: repo, state: "open", filter: 'created', since: Time.parse("#{1.days.ago}").iso8601)
 
 		@issues_last_7_days = git_client.issues.list(user: owner, repo: repo, state: "open", filter: 'created', since: Time.parse("#{7.days.ago}").iso8601)
-		# @issues_list = [344,243]
-		# @issues_last_24_hours = [344,243]
-		# @issues_last_7_days = [344,243]
 		values_hash = {
 			issues_list: @issues_list,
 			issues_last_24_hours: @issues_last_24_hours,
