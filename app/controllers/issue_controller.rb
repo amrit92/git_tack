@@ -5,16 +5,21 @@ class IssueController < ApplicationController
 	BET_24_7 = "Issues opened more than 24 hours ago but less than 7 days ago"
 	MORE_THAN_7 = "Issues opened more than 7 days ago"
 	def index
-		token = '61084046f66498e9fdeeeb1d9162436e45316d7f'
+		token = '749ecddf1ada1dfce8ea8875f8e04f32f112d567'
 
 		@owner, @repo = params[:user].split('/')
-		return if @owner.nil? || @repo.nil?
-		git_client = Github.new auto_pagination: true, oauth_token: token
-		@repostore = Repostore.where(name: "#{@owner}.#{@repo}").first
-		@repostore = Repostore.new(name: "#{@owner}.#{@repo}") unless @repostore
-		values_hash = get_issues(@owner, @repo, git_client)
-		update_store(values_hash)
-		make_calculations
+		git_client = Github.new auto_pagination: true, oauth_token: token, user: @owner, repo: @repo
+		repos = git_client.repos.list.collect(&:full_name)
+		if repos && repos.map{|s| s.downcase}.include?(params[:user])
+			@repostore = Repostore.where(name: "#{@owner}.#{@repo}").first
+			@repostore = Repostore.new(name: "#{@owner}.#{@repo}") unless @repostore
+			values_hash = get_issues(@owner, @repo, git_client)
+			update_store(values_hash)
+			make_calculations
+		else
+			flash[:notice] = "Repo doesnt exist"
+			redirect_to :back
+		end
 	end
 
 	def clickme
